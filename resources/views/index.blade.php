@@ -28,11 +28,14 @@
                     @include('product.card', ['product' => $product])
                 @endforeach
             </div>
+            <div class="see-other d-flex justify-content-center fs-4 fw-bold my-2 fade-in">
+                <a class="" href="{{ route('products.index') }}">Смотреть остальное!</a>
+            </div>
         </div>
 
-        <div class="mt-1 mb-3" id="running-text">Только сегодня! Успейте купить игрушки до Нового Года и получите скидку в <bolder>35%</bolder></div>
-
-
+        <div class="w-100 running-text">
+            <div class="mt-1 mb-3" id="running-text">Только сегодня! Успейте купить игрушки до Нового Года и получите скидку в <bolder>35%</bolder></div>
+        </div>
 
         {{-- Блок о нас --}}
         <div class="mt-4 p-4">

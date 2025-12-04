@@ -40,10 +40,11 @@ class ProductFilter extends AbstractFilter
     {
         match ((int) $value) {
             1 => $builder->latest('created_at'), // По дате добавления
-            2 => $builder->orderBy('price', 'asc'), // Цена ↑
-            3 => $builder->orderBy('price', 'desc'), // Цена ↓
-            4 => $builder->orderBy('title', 'asc'), // Название А-Я
-            5 => $builder->orderBy('title', 'desc'), // Название Я-А
+            2 => $builder->orderBy('sold','desc'), // По популярности
+            3 => $builder->orderBy('price', 'asc'), // Цена ↑
+            4 => $builder->orderBy('price', 'desc'), // Цена ↓
+            5 => $builder->orderBy('title', 'asc'), // Название А-Я
+            6 => $builder->orderBy('title', 'desc'), // Название Я-А
             default => $builder->latest('created_at'),
         };
     }

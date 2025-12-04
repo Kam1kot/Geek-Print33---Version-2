@@ -34,6 +34,11 @@ return [
     | Supported: "session"
     |
     */
+    'owner_login' => env('OWNER_LOGIN'),
+    'owner_pass' => env('OWNER_PASS'),
+
+    'dev_login' => env('DEV_LOGIN'),
+    'dev_pass' => env('DEV_PASS'),
 
     'guards' => [
         'web' => [

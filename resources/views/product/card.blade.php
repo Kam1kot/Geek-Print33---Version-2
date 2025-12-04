@@ -1,11 +1,11 @@
-<div class="product-card d-flex flex-column">
+<div class="product-card d-flex flex-column" id="product_{{ $product->id }}">
     {{-- изображение --}}
     <img src="{{ asset('imgs/products/shark.jpg') }}"
          alt="{{ $product->title }}"
          class="product-card__image">
 
     {{-- название --}}
-    <a href='/' class="product-card__title fs-5 fw-bold">{{ $product->title }}</a>
+    <a href='{{ route('products.show',['id' => $product->id]) }}' class="product-card__title fs-5 fw-bold">{{ $product->title }}</a>
     <p class="product-card__category mb-2">{{ $product->category->title }}</p>
     
     {{-- описание (макс. 3 строки) --}}
@@ -32,12 +32,32 @@
                 <span class="product-card__price-value fs-4 fw-bold">{{ $product->price }} ₽</span>
             </div>
             <div class="product-card__btns">
-                <button class="product-card__heart fw-bold">
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-                <button class="product-card__add-to-cart fw-bold">
-                    <i class="fa-solid fa-basket-shopping"></i> В корзину
-                </button>
+                @if (Cart::instance('wishlist')->content()->where('id',$product->id)->count()>0)
+                    <a class="product-card__heart" href="{{ route('wishlist.index') }}"><i class="fa-solid fa-heart text-danger"></i></a>
+                @else
+                <form id="addToWishlist" class="addToCart-form" method="post" action="{{ route('wishlist.add') }}">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $product->id }}">
+                    <input type="hidden" name="title" value="{{ $product->title }}">
+                    <input type="hidden" name="price" value="{{ $product->price }}">
+                    <button type="submit" class="product-card__heart fw-bold">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                </form>
+                @endif
+                @if(Cart::instance('cart')->content()->where('id',$product->id)->count()>0)
+                    <a href="{{ route('cart.index') }}" class="product-card__added-to-cart fw-bold"><i class="fa-solid fa-cart-shopping"></i></i> Добавлен</a>
+                @else
+                <form id="addToCart" class="addToCart-form" method="post" action="{{ route('cart.add') }}">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $product->id }}">
+                    <input type="hidden" name="title" value="{{ $product->title }}">
+                    <input type="hidden" name="price" value="{{ $product->price }}">
+                    <button type="submit" class="product-card__add-to-cart fw-bold">
+                        <i class="fa-solid fa-cart-plus"></i></i> В корзину
+                    </button>
+                </form>
+                @endif
             </div>
         </div>
     </div>

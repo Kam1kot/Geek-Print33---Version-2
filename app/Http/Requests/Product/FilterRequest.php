@@ -30,7 +30,7 @@ class FilterRequest extends FormRequest
             'category_id' => 'nullable|array',
             'category_id.*' => 'integer|exists:categories,id',
             'tags' => '',
-            'sort' => 'nullable|in:1,2,3,4,5',
+            'sort' => 'nullable|in:1,2,3,4,5,6',
         ];
     }
 }

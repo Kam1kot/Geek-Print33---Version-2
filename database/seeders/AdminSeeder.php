@@ -13,11 +13,13 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::firstOrCreate(
-            [
-                'username' => 'admin',
-                'password' => bcrypt('admin'),                
-            ]
-        );
+        $admins = [
+            ['username' => config('auth.owner_login'), 'password' => bcrypt(config('auth.owner_pass'))],
+            ['username' => config('auth.dev_login'), 'password' => bcrypt(config('auth.dev_pass'))],
+        ];
+        
+        foreach ($admins as $admin) {
+            Admin::firstOrCreate($admin);
+        }
     }
 }

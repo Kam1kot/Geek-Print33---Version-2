@@ -33,10 +33,11 @@
                                 <p>Тип сортировки</p>
                                 <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
                                     <option value="1" {{ request('sort') == '1' ? 'selected' : '' }}>По дате добавления</option>
-                                    <option value="2" {{ request('sort') == '2' ? 'selected' : '' }}>Цена ↑</option>
-                                    <option value="3" {{ request('sort') == '3' ? 'selected' : '' }}>Цена ↓</option>
-                                    <option value="4" {{ request('sort') == '4' ? 'selected' : '' }}>Название А-Я</option>
-                                    <option value="5" {{ request('sort') == '5' ? 'selected' : '' }}>Название Я-А</option>
+                                    <option value="2" {{ request('sort') == '2' ? 'selected' : '' }}>По популярности</option>
+                                    <option value="3" {{ request('sort') == '3' ? 'selected' : '' }}>Цена ↑</option>
+                                    <option value="4" {{ request('sort') == '4' ? 'selected' : '' }}>Цена ↓</option>
+                                    <option value="5" {{ request('sort') == '5' ? 'selected' : '' }}>Название А-Я</option>
+                                    <option value="6" {{ request('sort') == '6' ? 'selected' : '' }}>Название Я-А</option>
                                 </select>
                             </div>
                         </form>

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class MainController extends Controller
 {
@@ -14,7 +15,9 @@ class MainController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $tags = Tag::all();
-        return view('index', compact('title','products', 'categories'));
+        $items_cart = Cart::instance('cart')->content();
+        $items_wishlist = Cart::instance('wishlist')->content();
+        return view('index', compact('title','products', 'categories', 'items_cart', 'items_wishlist'));
     }
     // public function admin() {
     //     $title = 'Админ-панель';
@@ -26,16 +29,27 @@ class MainController extends Controller
     public function delivery() {
         $title = 'Доставка и оплата';
         $categories = Category::all();
-        return view('delivery', compact('title','categories'));
+        $items_cart = Cart::instance('cart')->content();
+        $items_wishlist = Cart::instance('wishlist')->content();
+        return view('delivery', compact('title','categories', 'items_cart', 'items_wishlist'));
     }
     public function contacts() {
         $title = 'Контакты';
         $categories = Category::all();
-        return view('contacts', compact('title','categories'));
+        $items_cart = Cart::instance('cart')->content();
+        $items_wishlist = Cart::instance('wishlist')->content();
+        return view('contacts', compact('title','categories', 'items_cart', 'items_wishlist'));
     }
     public function about_us() {
         $title = 'О нас';
         $categories = Category::all();
-        return view('about_us', compact('title','categories'));
+        $items_cart = Cart::instance('cart')->content();
+        $items_wishlist = Cart::instance('wishlist')->content();
+        return view('about_us', compact('title','categories', 'items_cart', 'items_wishlist'));
+    }
+    public function search(Request $request) {
+        $query = $request->input('query');
+        $results = Product::where('name', 'LIKE', "%{$query}%")->get()->take(6);
+        return response()->json($results);
     }
 }
