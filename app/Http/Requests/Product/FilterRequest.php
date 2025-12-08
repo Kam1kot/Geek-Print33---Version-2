@@ -31,6 +31,7 @@ class FilterRequest extends FormRequest
             'category_id.*' => 'integer|exists:categories,id',
             'tags' => '',
             'sort' => 'nullable|in:1,2,3,4,5,6',
+            'query' => ['sometimes', 'string', 'max:255'],
         ];
     }
 }

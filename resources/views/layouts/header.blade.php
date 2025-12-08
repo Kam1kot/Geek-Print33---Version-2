@@ -68,51 +68,69 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
     />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
   @include('partials.cookie-notification')
-  <header class="topbar">
-    <div class="navbar-wrapper sticky-top">
-      <div class="logo">
-          <img width="25px" style="height: 40px !important;" loading="lazy" src="{{ asset('imgs/technical/logo.png') }}"></img>
-          <a class="indie-flower-regular fs-1 fw-bold text-nowrap" href="{{ route('main.index') }}"><span class="title-geek">Geek</span>-Print33</a>
-      </div>
-      <div class="navbar-other">
-          <div class="divider"></div>
-          <form class="searchForm" method="get" action="{{ route('products.index') }}">
-              <input class="form-control" type="text" id="search-input" placeholder="Поиск по товарам...">
-              <i class="fa-solid fa-magnifying-glass"></i>
-          </form>
+    <header class="topbar">
+        <div class="navbar-wrapper sticky-top">
+            <div class="logo">
+                <img width="25px" style="height: 40px !important;" loading="lazy" src="{{ asset('imgs/technical/logo.png') }}"></img>
+                <a class="indie-flower-regular fs-1 fw-bold text-nowrap" href="{{ route('main.index') }}"><span class="title-geek">Geek</span>-Print33</a>
+            </div>
+            <div class="navbar-other">
+                <div class="divider"></div>
+                <form class="searchForm"
+                    action="{{ route('products.index') }}"
+                    method="GET"
+                    autocomplete="off">
+                    <input class="form-control"
+                        type="text"
+                        name="query"
+                        id="search-input"
+                        placeholder="Поиск по товарам...">
+                    <button type="submit" class="btn btn-link text-dark">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
 
-          <div class="search-popup__results">
-            <ul id="box-content-search">
+                <div class="search-popup__results d-none" id="box-content-search-wrapper">
+                    <div class="recent__wrapper sticky-top" id="recentCard">
+                        <div class="recent__header">Недавно искали</div>
+                        <div class="recent__body">
+                            <ul id="recentList" class="search-popup__recent-list"></ul>
+                        </div>
+                    </div>
+                    <div class="search-popup__results-list">
+                        <ul id="box-content-search">
+            
+                        </ul>
+                    </div>
+                </div>
 
-            </ul>
-          </div>
-          
-          <div class="actions">
-              <button class="wishlist">
-                    <a href="{{ route('wishlist.index') }}">
-                        <i class="fa-solid fa-heart"></i>
-                        @if($items_wishlist->count()>0)
-                          <span class="wishlist-amount position-absolute js-cart-items-count">{{ $items_wishlist->count() }}</span>
-                        @endif
-                    </a>
-              </button>
-              <button class="cart">
-                  <a href="{{ route('cart.index') }}" clsas="position-relative">
-                        <i class="fa-solid fa-basket-shopping"></i>
-                      Корзина
-                      @if($items_cart->count()>0)
-                          <span class="cart-amount position-absolute js-cart-items-count">{{ $items_cart->count() }}</span>
-                      @endif
-                  </a>
-              </button>
-          </div>
-      </div>
-  </div>
+                <div class="actions">
+                    <button class="wishlist">
+                            <a href="{{ route('wishlist.index') }}">
+                                <i class="fa-solid fa-heart"></i>
+                                @if($items_wishlist->count()>0)
+                                <span class="wishlist-amount position-absolute js-cart-items-count">{{ $items_wishlist->count() }}</span>
+                                @endif
+                            </a>
+                    </button>
+                    <button class="cart">
+                        <a href="{{ route('cart.index') }}" clsas="position-relative">
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            Корзина
+                            @if($items_cart->count()>0)
+                                <span class="cart-amount position-absolute js-cart-items-count">{{ $items_cart->count() }}</span>
+                            @endif
+                        </a>
+                    </button>
+                </div>
+            </div>
+        </div>
   </header>
   <aside class="sidebar">
     <nav class="mt-5">
@@ -249,24 +267,131 @@
                     });
                 }
             </script>
-            <script>
-                $(function(){
-                    $("#search-input").on("keyup", function() {
-                        var searchQuery = $(this).val();
 
+            <script>
+                $(function() {
+                    $("#search-input").on("keyup",function() {
+                        var searchQuery = $(this).val().trim();
+                        const $box = $("#box-content-search");
                         if (searchQuery.length > 2) {
+                            document.querySelector("#box-content-search-wrapper").classList.remove("d-none")
                             $.ajax({
-                                type: 'get',
+                                type: "GET",
                                 url: "{{ route('main.search') }}",
                                 data: {query: searchQuery},
                                 dataType: 'json',
-                                success: function(data){
-                                    
+                                success: function(data) {
+                                    $("#box-content-search").html('');
+                                    $.each(data, function(index,item) {
+                                        var url = "{{ route('products.show', ['product' => 'product_id']) }}";
+                                        var link = url.replace('product_id',item.id);
+
+                                        $("#box-content-search").append(`
+                                            <li>
+                                                @include('product.search-product')
+                                            </li>
+                                        `);
+                                    });
+                                }
+                            }).done(function (data) {
+                                if (!data || data.length === 0) {
+                                    $box.html('<p class="text-center p-5 fw-bold fs-5">Ничего не нашлось.</p>');
+                                    return;
                                 }
                             })
                         }
+                        // else {
+                        //     // document.querySelector("#box-content-search-wrapper").classList.add("d-none")
+                        // }
+                        const $input = $('#search-input');
+                        const $box_wrapper = $('#box-content-search-wrapper')
+                        $(document).on('click', function (e) {
+                            if ($input.is(e.target) || $box_wrapper[0].contains(e.target)) {
+                                return;
+                            }
+                            else {
+                                document.querySelector("#box-content-search-wrapper").classList.add("d-none")
+                            }
+                            
+
+                            $input.on('click', function() {
+                                if ($input.val().length > 2) {
+                                    document.querySelector("#box-content-search-wrapper").classList.remove("d-none")
+                                }
+                                else {
+                                    $box.addClass('d-none');
+                                }
+                            })
+                        });
                     })
-                })
+                });
+            </script>
+            <script>
+                $(function () {
+                    const STORAGE_KEY = "recentSearch";
+                    const MAX_ITEMS = 5;
+
+                    function getRecent() {
+                        try {
+                            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                        } catch(e) { return []; }
+                    }
+                    function setRecent(list) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+                    }
+                    function renderRecent() {
+                        const list = getRecent();
+                        const $ul  = $('#recentList').empty();
+                        const $card= $('#recentCard');
+
+                        if (!list.length) {
+                            $ul.addClass('d-none');
+                            return;
+                        }
+                        $ul.removeClass('d-none');
+
+                        list.forEach(text => {
+                            $ul.append(
+                                `<li class="search-popup__recent-item">
+                                        <a class="recent-query" href="{{ route('products.index') }}?query=${text}">${text}</a>
+                                        <i class="remove-query d-none fa-solid fa-xmark"></i>
+                                </li>`
+                            );
+                        });
+                    }
+                    function addQuery(text) {
+                        text = text.trim();
+                        if (!text) return;
+                        const list = getRecent().filter(q => q !== text);
+                        list.unshift(text);
+                        setRecent(list.slice(0, MAX_ITEMS));
+                        renderRecent();
+                    }
+                    $(document).on('click', '.remove-query', function (e) {
+                        e.stopPropagation();
+                        const text = $(this).siblings('.recent-query').text();
+                        const list = getRecent().filter(q => q !== text);
+                        setRecent(list);
+                        renderRecent();
+                    });
+                    $(document).on('click', '.recent-query', function () {
+                        $('#search-input').val($(this).text()).trigger('keyup');
+                    });
+                    $('#search-input').on('keydown', function (e) {
+                        if (e.key === 'Enter' || e.keyCode === 13) {
+                            addQuery($(this).val());
+                        }
+                    });
+                    renderRecent();
+                });
+            </script>
+            <script>
+            $(document).on('mouseenter', '.search-popup__recent-item', function () {
+                $(this).find('.remove-query').removeClass('d-none');
+            });
+            $(document).on('mouseleave', '.search-popup__recent-item', function () {
+                $(this).find('.remove-query').addClass('d-none');
+            });
             </script>
         </div>
     </footer>

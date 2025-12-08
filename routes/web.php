@@ -13,7 +13,8 @@ Route::get('/about-us', [MainController::class, 'about_us'])->name('main.about_u
 // Роуты продуктов
 Route::prefix('products')->name('products.')->group( function () {
     Route::get('/', Product\IndexController::class)->name('index');
-    Route::get('/show/{id}', Product\ShowController::class)->name('show');
+    Route::post('/create', Product\CreateController::class)->name('create');
+    Route::get('/{product}', Product\ShowController::class)->name('show');
 });
 
 // Роуты корзины
@@ -28,6 +29,11 @@ Route::prefix('cart')->name('cart.')->group(function () {
 
     Route::delete('/remove/{rowId}', [CartController::class, 'remove_item'])->name('item.remove');
     Route::delete('/clear', [CartController::class, 'empty_cart'])->name('destroy');
+
+    Route::get('/order/submit', [CartController::class, 'cart_submit'])->name('submit.order');
+    Route::post('/order', [CartController::class, 'send_order'])->name('checkout');
+    Route::get('/order/thanks', [CartController::class, 'order_thanks'])->name('thanks.order');
+    // Route::get('/order/thanks', [CheckoutController::class, 'thanks'])->name('checkout.thanks');
 });
 
 // Роуты вишлиста
@@ -37,6 +43,7 @@ Route::prefix(prefix: 'wishlist')->name('wishlist.')->group(function () {
     Route::delete('/remove/{rowId}', [WishlistController::class, 'remove_item'])->name('item.remove');
     Route::delete('/clear', [WishlistController::class, 'empty_wishlist'])->name('destroy');
 });
+
 
 Route::get('/search', [MainController::class, 'search'])->name('main.search');
 

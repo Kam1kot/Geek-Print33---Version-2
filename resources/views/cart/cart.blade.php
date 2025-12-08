@@ -86,12 +86,19 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="clear-cart">
-                            <form action="{{ route('cart.destroy') }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-light">Очистить корзину</button>
-                            </form>
+                        <div class="cart__actions-wrapper">
+                            <div class="cart__actions-inner">
+                                <div class="clear-cart">
+                                    <form action="{{ route('cart.destroy') }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-light">Очистить корзину</button>
+                                    </form>
+                                </div>
+                                <div class="submit-cart">
+                                    <a href="{{ route('cart.submit.order') }}">Оформить заказ</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -119,6 +126,31 @@
                             </table>
                         </div>
                     </div>
+                    {{-- <div>
+                        <form action="{{ route('cart.checkout') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label>ФИО</label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Телефон</label>
+                                <input type="text" name="phone" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Адрес доставки</label>
+                                <textarea name="address" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить заказ в Telegram</button>
+                        </form>
+                        <form action="{{ route('cart.checkout') }}" method="POST">
+                            @csrf
+                            <input type="text" name="name" placeholder="Ваше имя" required>
+                            <input type="text" name="phone" placeholder="Телефон" required>
+                            <input type="text" name="address" placeholder="Адрес доставки" required>
+                            <button type="submit">Отправить заказ в Telegram</button>
+                        </form>
+                    </div> --}}
                 @else
                     {{-- Пустая корзина --}}
                     <div class="shopping-cart__empty">

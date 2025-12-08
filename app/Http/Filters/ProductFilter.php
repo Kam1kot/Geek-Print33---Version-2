@@ -12,6 +12,7 @@ class ProductFilter extends AbstractFilter
     public const DESCRIPTION = 'description';
     public const CATEGORY_ID = 'category_id';
     public const SORT = 'sort';
+    public const QUERY = 'query';
     protected function getCallbacks(): array
     {
         return [
@@ -19,9 +20,13 @@ class ProductFilter extends AbstractFilter
             self::DESCRIPTION => [$this, 'description'],
             self::CATEGORY_ID => [$this, 'categoryId'],
             self::SORT => [$this, 'sort'],
+            self::QUERY => [$this, 'query'],
         ];
     }
-
+    public function query(Builder $builder, $value)
+    {
+        $builder->where('title', 'like', "%{$value}%");
+    }
     public function title(Builder $builder, $value)
     {
         $builder->where('title', 'like', "%{$value}%");

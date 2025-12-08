@@ -18,7 +18,9 @@ class IndexController extends Controller
         $title = 'Каталог';
         $items_cart = Cart::instance('cart')->content();
         $items_wishlist = Cart::instance('wishlist')->content();
+
         $data = $request->validated();
+        
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
         $products = Product::filter($filter)
         ->whereHas('category')

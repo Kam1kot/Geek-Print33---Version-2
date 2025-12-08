@@ -55,7 +55,7 @@
                                                 <form id="addToCart" class="addToCart-form" method="post" action="{{ route('cart.add') }}">
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{ $item->id }}">
-                                                    <input type="hidden" name="title" value="{{ $item->title }}">
+                                                    <input type="hidden" name="title" value="{{ $item->name }}">
                                                     <input type="hidden" name="price" value="{{ $item->price }}">
                                                     <button type="submit" class="product-card__add-to-cart fw-bold">
                                                         <i class="fa-solid fa-cart-plus"></i></i> В корзину

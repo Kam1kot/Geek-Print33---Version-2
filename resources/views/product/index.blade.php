@@ -46,9 +46,11 @@
             </div>
 
             <div class="products-list">
-                @foreach ($products as $product)
+                @forelse ($products as $product)
                     @include('product.card', ['product' => $product])
-                @endforeach
+                @empty
+                    <p>Ничего не найдено</p>
+                @endforelse
             </div>
         </div>
         <div class="paginate">
