@@ -24,6 +24,8 @@
     />
     <!--end::Primary Meta Tags-->
     <!--begin::Accessibility Features-->
+    {{-- CSS файл --}}
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
     <link rel="preload" href="./css/adminlte.css" as="style" />
@@ -72,7 +74,7 @@
   </head>
   <!--end::Head-->
   <!--begin::Body-->
-  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary admin">
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
       <!--begin::Header-->
@@ -279,6 +281,9 @@
       <!--end::Sidebar-->
       <!--begin::App Main-->
       <main class="app-main">
+        @yield('main-content')
+      </main>
+      {{-- <main class="app-main">
         <!--begin::App Content Header-->
         <div class="app-content-header">
           <!--begin::Container-->
@@ -717,7 +722,7 @@
           <!--end::Container-->
         </div>
         <!--end::App Content-->
-      </main>
+      </main> --}}
       <!--end::App Main-->
       <!--begin::Footer-->
       <footer class="app-footer">

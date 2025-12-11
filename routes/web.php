@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -13,7 +14,10 @@ Route::get('/about-us', [MainController::class, 'about_us'])->name('main.about_u
 // Роуты продуктов
 Route::prefix('products')->name('products.')->group( function () {
     Route::get('/', Product\IndexController::class)->name('index');
-    Route::post('/create', Product\CreateController::class)->name('create');
+    
+    Route::get('/create', Product\CreateController::class)->name('create');
+    Route::post('/', Product\StoreController::class)->name('store');
+    Route::post('/update', Product\UpdateController::class)->name('update');
     Route::get('/{product}', Product\ShowController::class)->name('show');
 });
 
@@ -57,9 +61,24 @@ Route::post('/set-cookie-consent', function (Request $request) {
     return response()->json(['status' => 'success']);
 })->name('set.cookie.consent');
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
+    });
+    Route::get('manage-products', [DashboardController::class, 'product_manage'])->name('manage.products');
+});
+
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -77,4 +96,4 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 //     Route::delete('/dashboard', [ProfileController::class, 'destroy'])->name('dashboard.destroy');
 // });
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';

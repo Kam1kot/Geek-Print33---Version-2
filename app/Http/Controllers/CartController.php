@@ -27,7 +27,7 @@ class CartController extends Controller
     }
     public function add_to_cart(Request $request) {
         // dd($request);
-        Cart::instance('cart')->add($request->id, $request->title, 1, $request->price)->associate('App\Models\Product');
+        Cart::instance('cart')->add($request->id, $request->title, $request->quantity, $request->price)->associate('App\Models\Product');
         return redirect()->back()->withFragment('product_' . $request->id);
     }
     

@@ -74,65 +74,7 @@
 
 <body>
   @include('partials.cookie-notification')
-    <header class="topbar">
-        <div class="navbar-wrapper sticky-top">
-            <div class="logo">
-                <img width="25px" style="height: 40px !important;" loading="lazy" src="{{ asset('imgs/technical/logo.png') }}"></img>
-                <a class="indie-flower-regular fs-1 fw-bold text-nowrap" href="{{ route('main.index') }}"><span class="title-geek">Geek</span>-Print33</a>
-            </div>
-            <div class="navbar-other">
-                <div class="divider"></div>
-                <form class="searchForm"
-                    action="{{ route('products.index') }}"
-                    method="GET"
-                    autocomplete="off">
-                    <input class="form-control"
-                        type="text"
-                        name="query"
-                        id="search-input"
-                        placeholder="Поиск по товарам...">
-                    <button type="submit" class="btn btn-link text-dark">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-
-                <div class="search-popup__results d-none" id="box-content-search-wrapper">
-                    <div class="recent__wrapper sticky-top" id="recentCard">
-                        <div class="recent__header">Недавно искали</div>
-                        <div class="recent__body">
-                            <ul id="recentList" class="search-popup__recent-list"></ul>
-                        </div>
-                    </div>
-                    <div class="search-popup__results-list">
-                        <ul id="box-content-search">
-            
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button class="wishlist">
-                            <a href="{{ route('wishlist.index') }}">
-                                <i class="fa-solid fa-heart"></i>
-                                @if($items_wishlist->count()>0)
-                                <span class="wishlist-amount position-absolute js-cart-items-count">{{ $items_wishlist->count() }}</span>
-                                @endif
-                            </a>
-                    </button>
-                    <button class="cart">
-                        <a href="{{ route('cart.index') }}" clsas="position-relative">
-                                <i class="fa-solid fa-basket-shopping"></i>
-                            Корзина
-                            @if($items_cart->count()>0)
-                                <span class="cart-amount position-absolute js-cart-items-count">{{ $items_cart->count() }}</span>
-                            @endif
-                        </a>
-                    </button>
-                </div>
-            </div>
-        </div>
-  </header>
-  <aside class="sidebar">
+  <aside class="sidebar" id="mainSidebar">
     <nav class="mt-5">
       <ul
           class="nav sidebar-menu flex-column"
@@ -209,6 +151,67 @@
       </div>
   </div>
   </aside>
+  <header class="topbar">
+        <div class="navbar-wrapper sticky-top">
+            <div class="logo">
+                <img width="25px" style="height: 40px !important;" loading="lazy" src="{{ asset('imgs/technical/logo.png') }}"></img>
+                <a class="indie-flower-regular fs-1 fw-bold text-nowrap" href="{{ route('main.index') }}"><span class="title-geek">Geek</span>-Print33</a>
+            </div>
+            <div class="navbar-other">
+                <div class="divider"></div>
+                <a class="nav-link sidebar-toggle-box" data-lte-toggle="sidebar" href="#" role="button">
+                    <i class="bi bi-list"></i>
+                </a>
+                <form class="searchForm"
+                    action="{{ route('products.index') }}"
+                    method="GET"
+                    autocomplete="off">
+                    <input class="form-control"
+                        type="text"
+                        name="query"
+                        id="search-input"
+                        placeholder="Поиск по товарам...">
+                    <button type="submit" class="btn btn-link text-dark">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+
+                <div class="search-popup__results d-none" id="box-content-search-wrapper">
+                    <div class="recent__wrapper sticky-top" id="recentCard">
+                        <div class="recent__header">Недавно искали</div>
+                        <div class="recent__body">
+                            <ul id="recentList" class="search-popup__recent-list"></ul>
+                        </div>
+                    </div>
+                    <div class="search-popup__results-list">
+                        <ul id="box-content-search">
+            
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="wishlist">
+                            <a href="{{ route('wishlist.index') }}">
+                                <i class="fa-solid fa-heart"></i>
+                                @if($items_wishlist->count()>0)
+                                <span class="wishlist-amount position-absolute js-cart-items-count">{{ $items_wishlist->count() }}</span>
+                                @endif
+                            </a>
+                    </button>
+                    <button class="cart">
+                        <a href="{{ route('cart.index') }}" clsas="position-relative">
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            Корзина
+                            @if($items_cart->count()>0)
+                                <span class="cart-amount position-absolute js-cart-items-count">{{ $items_cart->count() }}</span>
+                            @endif
+                        </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+  </header>
   <div class="content">
 
     <main>
@@ -234,6 +237,7 @@
             {{-- swiperjs --}}
             <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
             <script src="./js/swiper.js"></script>
+            <script src="./js/swiper-products.js"></script>
 
             {{-- Логика появления fade-in --}}
             <script>
@@ -393,6 +397,14 @@
                 $(this).find('.remove-query').addClass('d-none');
             });
             </script>
+            <script>
+                /* клик по «гамбургеру» → переключить класс на aside */
+                document.querySelector('[data-lte-toggle="sidebar"]')
+                        .addEventListener('click', e => {
+                            e.preventDefault();
+                            document.getElementById('mainSidebar').classList.toggle('sidebar-collapsed');
+                        });
+                </script>
         </div>
     </footer>
   </div>

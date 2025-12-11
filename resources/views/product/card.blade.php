@@ -1,8 +1,10 @@
 <div class="product-card d-flex flex-column" id="product_{{ $product->id }}">
     {{-- изображение --}}
-    <img src="{{ asset('imgs/products/shark.jpg') }}"
-         alt="{{ $product->title }}"
-         class="product-card__image">
+    <a href="{{ route('products.show',['product' => $product->id]) }}">
+        <img src="{{ asset('imgs/products/shark.jpg') }}"
+             alt="{{ $product->title }}"
+             class="product-card__image">
+    </a>
 
     {{-- название --}}
     <a href='{{ route('products.show',['product' => $product->id]) }}' class="product-card__title fs-5 fw-bold">{{ $product->title }}</a>
@@ -39,6 +41,7 @@
                     @csrf
                     <input type="hidden" name="id" value="{{ $product->id }}">
                     <input type="hidden" name="title" value="{{ $product->title }}">
+                    <input type="hidden" name="quantity" value="1">
                     <input type="hidden" name="price" value="{{ $product->price }}">
                     <button type="submit" class="product-card__heart fw-bold">
                         <i class="fa-regular fa-heart"></i>
@@ -52,7 +55,9 @@
                     @csrf
                     <input type="hidden" name="id" value="{{ $product->id }}">
                     <input type="hidden" name="title" value="{{ $product->title }}">
+                    <input type="hidden" name="quantity" value="1">
                     <input type="hidden" name="price" value="{{ $product->price }}">
+
                     <button type="submit" class="product-card__add-to-cart fw-bold">
                         <i class="fa-solid fa-cart-plus"></i></i> В корзину
                     </button>

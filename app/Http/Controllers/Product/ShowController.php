@@ -19,7 +19,8 @@ class ShowController extends Controller
         $items_wishlist = Cart::instance('wishlist')->content();
         $title = $product->title;
 
+        $products_other = Product::get()->shuffle()->take(4);
         $categories = Category::all();
-        return view('product.show' , compact('product','categories', 'title', 'items_cart', 'items_wishlist'));
+        return view('product.show' , compact('products_other','product','categories', 'title', 'items_cart', 'items_wishlist'));
     }
 }

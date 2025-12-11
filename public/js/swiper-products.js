@@ -1,12 +1,9 @@
-const swiper = new Swiper(".main-inner .swiper", {
+const swiper_products = new Swiper(".other-prds .swiper", {
     // Optional parameters
     direction: "horizontal",
-    loop: true,
-    autoplay: {
-        delay: 10000,
-    },
-    slidesPerView: 2,
-    spaceBetween: 10,
+    loop: false,
+    slidesPerView: 4,
+    spaceBetween: 15,
     // Responsive breakpoints
     //   breakpoints: {
     //     // when window width is >= 320px
@@ -24,19 +21,4 @@ const swiper = new Swiper(".main-inner .swiper", {
     //       slidesPerView: 4,
     //       spaceBetween: 40
     //     },
-    // If we need pagination
-    pagination: {
-        el: ".swiper-pagination",
-    },
-
-    // Navigation arrows
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-
-    // And if we need scrollbar
-    scrollbar: {
-        el: ".swiper-scrollbar",
-    },
 });

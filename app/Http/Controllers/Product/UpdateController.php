@@ -11,15 +11,10 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Surfsidemedia\Shoppingcart\Facades\Cart;
 
-class CreateController extends Controller
+class UpdateController extends Controller
 {
     public function __invoke(FilterRequest $request)
     {
-        $title = 'Создание товара';
-        $items_cart = Cart::instance('cart')->content();
-        $items_wishlist = Cart::instance('wishlist')->content();
-
-        $categories = Category::all();
-        return view('product.create' , compact('categories', 'title', 'items_cart', 'items_wishlist'));
+        
     }
 }
